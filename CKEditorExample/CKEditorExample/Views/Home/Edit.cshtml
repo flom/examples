@@ -1,0 +1,32 @@
+﻿@{
+  ViewBag.Title = "CKEditor Example";
+}
+
+@section scripts {
+  @Scripts.Render("~/Scripts/ckeditor/ckeditor.js")
+
+    <script>
+        CKEDITOR.config.filebrowserUploadUrl = '/Home/UploadFromEditor';
+        CKEDITOR.config.filebrowserBrowseUrl = '/Home/ImageBrowser';
+
+
+        function save() {
+            $.ajax({
+                type: "POST",
+                url: "/Home/Edit",
+                data: { content : CKEDITOR.instances["editor1"].getData() },
+                success: function () {
+                    window.location = "/Home";
+                },
+                dataType: "json"
+            });
+        }
+    </script>
+}
+
+
+<textarea class="ckeditor" name="editor1">
+  @ViewBag.Content
+</textarea>
+
+<button class="btn btn-primary" onclick="save()">save</button>
